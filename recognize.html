@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="resources/favicon.jpg" />
+    <link rel="stylesheet" href="styles/recognize.css" />
+    <title>Recognize</title>
+    <script type="text/javascript" src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"></script>
+    <script type="text/javascript" src="javascript/recognize.js"></script>
+    <script>
+
+      const userRole = "admin",
+        userName = "jonah";
+      let webcam = undefined;
+
+      function init() {
+        document.getElementById("user-role").innerHTML = userRole;
+        document.getElementById("user-name").innerHTML = userName;
+
+        const webcamElement = document.getElementById("webcam");
+        const canvasElement = document.getElementById("canvas");
+        //const snapSoundElement = document.getElementById("snapSound");
+        webcam = new Webcam(
+            webcamElement,
+            "user",
+            canvasElement,
+            null
+        ); // leave the last parameters as null because I do not need the sound effect
+        setTimeout(start, 1000);
+    }
+
+        function start() {
+            webcam
+                .start()
+                .then((result) => {
+                    console.log("webcam started");
+                })
+                .catch((err) => {
+                    console.error(err); // was console.log
+                });
+        }
+
+        function snap() {
+            /*
+                One of the site guide me to convert it's type, 
+                But the output of this module is already in string type. 
+                We can check verify this with typeof(image).
+                One of our responsible when we integrate other's work into ours, 
+                is to verify and fix dependencies issue. 
+            */
+            let image = webcam.snap();
+            /*
+                Alright, so we can go ahead and save it to the browser's local storage with the code below. 
+                I still want to recommend the site even though it took a while to figure out I don't need a type conversion. 
+                In fact, many parts of my code is also from this site. 
+                Link: https://www.webmound.com/save-images-localstorage-javascript/#:~:text=Step%201%3A%20Get%20the%20image,setItem()%20method%20in%20JavaScript.
+            */
+            localStorage.setItem("image", image);
+        }
+
+        function send(){
+            const url = "https://cfims.tzuchi.com.my/images-error-handling";
+            const image = localStorage.getItem("image");
+            HTTPPostData(url, image, (response)=>{
+                document.getElementById("ajax-response").innerHTML = response;
+            });
+        }
+
+        function recognize(){
+            snap();
+            send();
+        }
+    </script>
+  </head>
+  <body onload="init();">
+    <div id="main-container">
+      main-container
+      <div class="header">
+        <img src="resources/favicon.jpg" alt="Tzu-Chi Logo" />
+        <span id="user-info">
+          <span id="user-role"></span>
+          &nbsp;|&nbsp;
+          <a
+            href="https://github.com/JonahTzuChi/JS-Browser-TakePicture-UploadPicture"
+            ><span id="user-name"></span
+          ></a>
+        </span>
+      </div>
+      <div class="application">
+        <div id="section_1">
+          <div id="panel_1">
+            <h2>PANEL 1</h2>
+            <video
+              id="webcam"
+              autoplay
+              playsinline
+              width="320"
+              height="240"
+            ></video>
+          </div>
+          <div id="panel_2">
+            <h2>PANEL 2</h2>
+            <canvas id="canvas" class="d-none"></canvas>
+          </div>
+        </div>
+        <br />
+        <div id="section_2">
+            <input type="button" onclick="recognize();" value="RECOGNIZE" />
+        </div>
+        <div id="section_3">
+            <p id="ajax-response">
+                Expect to see server response here
+            </p>
+        </div>
+      </div>
+      <div class="footer">Contact Me: jonah_mytzuchi@outlook.com</div>
+    </div>
+  </body>
+</html>

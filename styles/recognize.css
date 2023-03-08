@@ -1,0 +1,64 @@
+#main-container{
+    overflow: hidden;
+    height: 100%;
+    min-width: 900px;
+}
+
+.header {
+    background-color: gray;
+    height: 80px;
+}
+
+.application {
+    height: 600px;
+    background-color: aqua;
+}
+
+.footer {
+    background-color: gray;
+    height: 50px;
+}
+
+#main-container .header img {
+    height: 80px;
+    left: 0px;
+    position: absolute;
+    display: inline-block;
+}
+
+#main-container .header #user-info {
+    right: 50px;
+    position: absolute;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+#main-container .application #section_1,
+#main-container .application #section_2 {
+    justify-content: space-evenly;
+    display: flex;
+    text-align: center;
+}
+
+#main-container .application #section_1 h2{
+    text-decoration: underline;
+}
+#main-container .application #section_1 #panel_1,
+#main-container .application #section_1 #panel_2{
+    margin-top: 30px;
+    border: 1px solid black;
+    width: 500px;
+    height: 400px;
+}
+#main-container .application #section_2 input[type="button"]{
+    background-color: yellow;
+    font-size: x-large;
+}
+#main-container .application #section_3 {
+    margin-top: 10px;
+    border: 1px solid black;
+    height: 100px;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
